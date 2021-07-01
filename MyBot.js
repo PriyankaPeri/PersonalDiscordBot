@@ -12,10 +12,10 @@ client.on("ready", () => {
 Current Date: ${date}
 Current Time: ${time}`);
 });
-const game=(choice,msg)=> {
+const game = (msg) => {
     let botchoice = Math.floor(Math.random() * 3);
     const converter = { R: 0, P: 1, S: 2 };
-    let pc = converter[choice.content];
+    let pc = converter[msg.content];
     if (botchoice === pc) msg.channel.send("It's a Tie!");
     if ((botchoice + pc) % 2 === 0) {
         [botchoice, pc] = [pc, botchoice];
@@ -26,16 +26,16 @@ const game=(choice,msg)=> {
     if (pc > botchoice) {
         msg.channel.send("Pants down, you win!");
     }
-}
+};
 client.on("message", (msg) => {
     if (msg.content === "stop") {
-        client.removeListener(game);
+        client.removeListener("message", game);
     }
-}) 
+});
 client.on("message", (msg) => {
     if (msg.content === "!game rps") {
         msg.channel.send("Pick R-Rock P-Paper S-Scissors");
-        client.on("message", (choice) => game(choice, msg));
+        client.on("message", game);
     }
 });
 client.login(process.env.BT);
